@@ -1,14 +1,5 @@
 {
-  "mcpServers": {
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp"]
-    },
-    "memory-keeper": {
-      "command": "npx",
-      "args": ["-y", "mcp-memory-keeper"]
-    }
-  },
+  "mcpServers": {},
   "env": {
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "CLAUDE_CODE_DISABLE_TELEMETRY": "1"
@@ -57,24 +48,34 @@
     "PreToolUse": [
       {
         "matcher": "Bash",
-        "hooks": [{"type": "command", "command": "~/.claude/hooks/commit_guard.py"}]
+        "hooks": [
+          { "type": "command", "command": "~/.claude/hooks/commit_guard.py" }
+        ]
       },
       {
         "matcher": "Read",
-        "hooks": [{"type": "command", "command": "~/.claude/hooks/block_secrets.py"}]
+        "hooks": [
+          { "type": "command", "command": "~/.claude/hooks/block_secrets.py" }
+        ]
       },
       {
         "matcher": "Edit",
         "hooks": [
-          {"type": "command", "command": "~/.claude/hooks/protect_claude_md.py"},
-          {"type": "command", "command": "~/.claude/hooks/block_secrets.py"}
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/protect_claude_md.py"
+          },
+          { "type": "command", "command": "~/.claude/hooks/block_secrets.py" }
         ]
       },
       {
         "matcher": "Write",
         "hooks": [
-          {"type": "command", "command": "~/.claude/hooks/protect_claude_md.py"},
-          {"type": "command", "command": "~/.claude/hooks/block_secrets.py"}
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/protect_claude_md.py"
+          },
+          { "type": "command", "command": "~/.claude/hooks/block_secrets.py" }
         ]
       }
     ],
@@ -82,17 +83,17 @@
       {
         "matcher": "Edit",
         "hooks": [
-          {"type": "command", "command": "~/.claude/hooks/emoji_guard.py"},
-          {"type": "command", "command": "~/.claude/hooks/no_ai_comments.py"},
-          {"type": "command", "command": "~/.claude/hooks/format_files.py"}
+          { "type": "command", "command": "~/.claude/hooks/emoji_guard.py" },
+          { "type": "command", "command": "~/.claude/hooks/no_ai_comments.py" },
+          { "type": "command", "command": "~/.claude/hooks/format_files.py" }
         ]
       },
       {
         "matcher": "Write",
         "hooks": [
-          {"type": "command", "command": "~/.claude/hooks/emoji_guard.py"},
-          {"type": "command", "command": "~/.claude/hooks/no_ai_comments.py"},
-          {"type": "command", "command": "~/.claude/hooks/format_files.py"}
+          { "type": "command", "command": "~/.claude/hooks/emoji_guard.py" },
+          { "type": "command", "command": "~/.claude/hooks/no_ai_comments.py" },
+          { "type": "command", "command": "~/.claude/hooks/format_files.py" }
         ]
       }
     ]
@@ -106,6 +107,6 @@
     "cicd-automation@claude-code-workflows": true,
     "code-documentation@claude-code-workflows": true,
     "code-refactoring@claude-code-workflows": true,
-    "ralph-wiggum@claude-plugins-official": true
+    "context7@claude-plugins-official": true
   }
 }
