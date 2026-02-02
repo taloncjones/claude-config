@@ -172,10 +172,13 @@ This config supports a worktree-based workflow with optional Jira integration. E
 ```mermaid
 flowchart TD
     subgraph "Start Work"
-        A1["/jira mine"] --> A2{Pick ticket}
-        A2 --> B1["/start PROJ-123"]
-        A3["/start my-feature"] --> C
+        A["/start"] --> B{Link Jira?}
+        B -->|Yes| B1[Pick ticket / Enter key / Create new]
+        B -->|No| B2[Enter topic name]
         B1 --> C[Worktree created]
+        B2 --> C
+        A2["/start PROJ-123"] --> C
+        A3["/start my-feature"] --> C
     end
 
     subgraph "Development"
@@ -208,6 +211,7 @@ flowchart TD
 ### Starting work
 
 ```
+/start                        # Interactive: link Jira or just enter topic
 /start my-feature             # Start with topic name (no Jira)
 /start PROJ-123               # Start from Jira ticket (if plugin available)
 /jira mine                    # List your Jira tickets first

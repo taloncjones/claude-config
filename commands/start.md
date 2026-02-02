@@ -45,8 +45,13 @@ If argument is free text (topic):
 
 If no argument (interactive):
 
-- If Jira available: "Enter a topic name, or a Jira key (e.g., PROJ-123):"
-- If Jira not available: "Enter a topic name for your branch:"
+- If Jira available, ask: "Link to a Jira ticket?"
+  - **Yes**: Offer options:
+    - Pick from open tickets (To Do, In Progress) assigned to user
+    - Enter a ticket key directly
+    - Create a new ticket (ask for project and summary)
+  - **No**: Ask for topic name only, proceed without Jira
+- If Jira not available: Ask for topic name for the branch
 
 **Step 3: Check for existing worktree**
 
