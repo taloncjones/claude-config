@@ -57,7 +57,7 @@ ls -la ~/.claude
 Plugins are enabled in `settings.json`. You need to install each one via the Claude Code CLI:
 
 ```bash
-claude plugin add code-review --source claude-code-plugins
+claude plugin add code-review --source claude-plugins-official
 claude plugin add commit-commands --source claude-code-plugins
 claude plugin add feature-dev --source claude-code-plugins
 claude plugin add python-development --source claude-code-workflows
@@ -65,13 +65,15 @@ claude plugin add cicd-automation --source claude-code-workflows
 claude plugin add code-documentation --source claude-code-workflows
 claude plugin add code-refactoring --source claude-code-workflows
 claude plugin add context7 --source claude-plugins-official
+claude plugin add atlassian --source claude-plugins-official
+claude plugin add frontend-design --source claude-plugins-official
 ```
 
 Or install interactively by running `claude` and using `/plugins` to browse the marketplace.
 
 | Plugin               | Source                    | Description                               |
 | -------------------- | ------------------------- | ----------------------------------------- |
-| `code-review`        | `claude-code-plugins`     | PR code review                            |
+| `code-review`        | `claude-plugins-official` | PR code review                            |
 | `commit-commands`    | `claude-code-plugins`     | Commit, push, and PR shortcuts            |
 | `feature-dev`        | `claude-code-plugins`     | Guided feature development                |
 | `python-development` | `claude-code-workflows`   | Python testing, packaging, async patterns |
@@ -79,6 +81,8 @@ Or install interactively by running `claude` and using `/plugins` to browse the 
 | `code-documentation` | `claude-code-workflows`   | Documentation generation and review       |
 | `code-refactoring`   | `claude-code-workflows`   | Legacy modernization and code review      |
 | `context7`           | `claude-plugins-official` | Up-to-date library documentation lookup   |
+| `atlassian`          | `claude-plugins-official` | Jira and Confluence integration           |
+| `frontend-design`    | `claude-plugins-official` | Frontend UI design and components         |
 
 Skip any plugins you don't need -- just remove the corresponding line from `enabledPlugins` in `settings.json`.
 
@@ -91,14 +95,22 @@ Skip any plugins you don't need -- just remove the corresponding line from `enab
 | `/arch-review` | Architecture review (SOLID, design patterns) |
 | `/arewedone`   | Structural completeness check                |
 | `/bugs`        | Systematic bug hunting and code audit        |
+| `/checks`      | View CI/PR check status                      |
+| `/commit`      | Create commit with auto-detected scope       |
 | `/debug`       | Root cause debugging                         |
+| `/dev-review`  | Pre-PR review (arch, bugs, compliance)       |
 | `/doc`         | Generate or review documentation             |
+| `/done`        | Finish work and clean up worktree            |
 | `/explain`     | Deep dive code explanation                   |
+| `/jira`        | Interact with linked Jira ticket             |
 | `/lint`        | Run linters and formatters                   |
 | `/perf-check`  | Performance analysis                         |
 | `/pr`          | Create a pull request                        |
 | `/rebase`      | Smart git rebase                             |
 | `/refresh`     | Regenerate CLAUDE.md                         |
+| `/start`       | Start new work (Jira + worktree)             |
+| `/status`      | Check current work status                    |
+| `/switch`      | Switch between worktrees                     |
 | `/test`        | Run project tests                            |
 | `/worktree`    | Git worktree management                      |
 
