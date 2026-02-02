@@ -131,6 +131,6 @@ Ready to begin.
 
 Related commands:
 
-- `/jira mine` - list tickets to pick from
+- `/jira mine` - list tickets to pick from (if Jira configured)
 - `/status` - check current work status
 - `/pr` - create pull request when done

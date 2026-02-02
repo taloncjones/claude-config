@@ -124,6 +124,6 @@ Last commit: <scope>: <summary> (<time> ago)
 
 Related commands:
 
-- `/start` - create new worktree for Jira ticket
+- `/start` - create new worktree with optional Jira integration
 - `/status` - detailed status of current worktree
 - `/done` - cleanup worktree after PR merge
