@@ -74,5 +74,5 @@ Worktrees allow working on multiple branches simultaneously without stashing or 
 
 Related commands:
 
-- `/start` - Jira-integrated worktree creation (recommended)
+- `/start` - Task-based worktree creation with optional Jira (recommended)
 - `/done` - cleanup worktree after PR merge
