@@ -2,6 +2,8 @@
 
 Manage the Jira ticket associated with the current branch, or view your tickets.
 
+Requires Atlassian plugin to be configured.
+
 ## Usage
 
 - `/jira` - Show current ticket details
@@ -34,6 +36,7 @@ Manage the Jira ticket associated with the current branch, or view your tickets.
 **Step 1: Discover Atlassian site**
 
 - Call `getAccessibleAtlassianResources` to get available sites
+- If fails or no sites returned: "Jira plugin not configured. This command requires the Atlassian MCP plugin."
 - Extract the site URL and cloud ID
 
 **Step 2: Determine Jira ticket** (for commands that need it)

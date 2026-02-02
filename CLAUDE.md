@@ -39,14 +39,14 @@ These rules are enforced by hooks in Claude Code. Follow them in all tools.
 - Scope is the affected area (e.g., `eol`, `hil`, `docs`, `common`)
 - No emojis in commit messages
 
-**Branches:** `<user>/<PROJECT-###>/<topic-slug>` (with Jira integration)
+**Branches:**
 
-- Example: `user/PROJ-123/add-feature`
-- Fallback (no Jira): `<user>/<topic>`
+- With Jira: `<user>/<PROJ-###>/<topic-slug>` (e.g., `user/PROJ-123/add-feature`)
+- Without Jira: `<user>/<topic-slug>` (e.g., `user/add-feature`)
 
 **PRs:** Target main, squash merge, include description and test plan
 
-- Include Jira link at bottom: `[PROJ-###](https://<site>.atlassian.net/browse/PROJ-###)`
+- Include Jira link at bottom if available: `[PROJ-###](https://<site>.atlassian.net/browse/PROJ-###)`
 
 ## Code Standards
 

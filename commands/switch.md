@@ -18,7 +18,14 @@ List and switch Claude's working directory to a different worktree.
 
 ## Instructions
 
-**Step 1: List worktrees with context**
+**Step 1: Check for Atlassian plugin**
+
+Try calling `getAccessibleAtlassianResources`:
+
+- If successful: Jira integration is available
+- If fails or no sites returned: Jira not available, skip Jira column
+
+**Step 2: List worktrees with context**
 
 ```bash
 git worktree list
@@ -28,12 +35,14 @@ For each worktree, gather:
 
 - Path
 - Branch name
-- Jira key (extracted from branch)
-- Jira status (if Atlassian plugin available)
+- Jira key (extracted from branch, if present)
+- Jira status (if Atlassian plugin available AND Jira key found)
 - Uncommitted changes (`git -C <path> status --porcelain`)
 - Commits ahead of main
 
 Display as numbered table:
+
+With Jira:
 
 ```
 Worktrees:
@@ -49,18 +58,34 @@ Current: <repo> (main)
 Enter number, name, or Jira key to switch:
 ```
 
-**Step 2: Match selection**
+Without Jira:
+
+```
+Worktrees:
+
+| # | Directory   | Branch                  | Changes |
+|---|-------------|-------------------------|---------|
+| 1 | <repo>      | main                    | clean   |
+| 2 | <topic-a>   | <user>/<topic-a>        | clean   |
+| 3 | <topic-b>   | <user>/<topic-b>        | 2 files |
+
+Current: <repo> (main)
+
+Enter number or name to switch:
+```
+
+**Step 3: Match selection**
 
 If argument provided, match against:
 
 1. Worktree number (e.g., "2")
 2. Directory name (partial match, e.g., "voltage")
 3. Branch name (partial match)
-4. Jira key (e.g., "PROJ-123")
+4. Jira key if present (e.g., "PROJ-123")
 
 If no argument, prompt user to pick.
 
-**Step 3: Switch working directory**
+**Step 4: Switch working directory**
 
 ```bash
 cd <worktree-path>
@@ -68,7 +93,9 @@ cd <worktree-path>
 
 This changes Claude's working directory for subsequent commands.
 
-**Step 4: Confirm switch and show context**
+**Step 5: Confirm switch and show context**
+
+With Jira:
 
 ```
 Switched to: ~/Git/work/<topic>
@@ -77,6 +104,17 @@ Branch: <user>/PROJ-123/<topic>
 Jira:   PROJ-123 - <ticket summary> (In Progress)
         https://<site>.atlassian.net/browse/PROJ-123
 
+Status: N commits ahead of main, working tree clean
+
+Last commit: <scope>: <summary> (<time> ago)
+```
+
+Without Jira:
+
+```
+Switched to: ~/Git/work/<topic>
+
+Branch: <user>/<topic>
 Status: N commits ahead of main, working tree clean
 
 Last commit: <scope>: <summary> (<time> ago)

@@ -1,26 +1,34 @@
 # /done - Finish work and clean up
 
-Clean up after PR is merged: transition Jira to Done, remove worktree, delete branch.
+Clean up after PR is merged: remove worktree, delete branch, optionally transition Jira to Done.
 
 ## Usage
 
 - `/done` - Finish current work (from within the worktree)
-- `/done PROJ-123` - Finish work for specific ticket (from any directory)
+- `/done <topic>` - Finish work for specific topic/ticket (from any directory)
 
 ## Instructions
 
-**Step 1: Determine what to clean up**
+**Step 1: Check for Atlassian plugin**
 
-If argument provided (Jira key):
+Try calling `getAccessibleAtlassianResources`:
 
-- Use that to find the associated branch/worktree
+- If successful: Jira integration is available
+- If fails or no sites returned: Jira not available, skip Jira steps
+
+**Step 2: Determine what to clean up**
+
+If argument provided:
+
+- If looks like Jira key (e.g., `PROJ-123`): find associated branch/worktree
+- Otherwise treat as topic name and search worktrees
 
 If no argument:
 
 - Get current branch name
-- Extract Jira key from branch (e.g., `<user>/<PROJ-###>/topic` -> `PROJ-###`)
+- Extract topic (and Jira key if present) from branch
 
-**Step 2: Verify PR is merged**
+**Step 3: Verify PR is merged**
 
 ```bash
 gh pr view --json state,mergedAt
@@ -30,15 +38,18 @@ gh pr view --json state,mergedAt
 - If PR is open: ask "PR is still open. Close without merging?" (require explicit confirmation)
 - If no PR exists: ask "No PR found. Continue with cleanup anyway?"
 
-**Step 3: Transition Jira to Done**
+**Step 4: Transition Jira to Done (if available)**
 
-- Call `getAccessibleAtlassianResources` to get site
+If Jira is available AND branch contains a Jira key:
+
 - Fetch ticket using `getJiraIssue`
 - Get available transitions using `getTransitionsForJiraIssue`
 - Find "Done" transition and execute using `transitionJiraIssue`
 - Confirm: "PROJ-123 transitioned to Done"
 
-**Step 4: Navigate out of worktree**
+If Jira not available: skip this step silently.
+
+**Step 5: Navigate out of worktree**
 
 If currently inside the worktree being deleted:
 
@@ -50,7 +61,7 @@ cd "$MAIN_WORKTREE"
 
 Tell user: "Changed directory to main worktree"
 
-**Step 5: Remove worktree and branch**
+**Step 6: Remove worktree and branch**
 
 ```bash
 # Get worktree path for this branch
@@ -66,7 +77,9 @@ git branch -d "$BRANCH_NAME"
 git fetch --prune
 ```
 
-**Step 6: Report and show next steps**
+**Step 7: Report and show next steps**
+
+With Jira:
 
 ```
 Finished work on PROJ-123: <ticket summary>
@@ -79,12 +92,24 @@ Finished work on PROJ-123: <ticket summary>
 You're now in: /path/to/main/worktree (main branch)
 ```
 
+Without Jira:
+
+```
+Finished work: <topic>
+
+[x] Worktree removed: ../<topic>
+[x] Branch deleted: <user>/<topic>
+[x] Remote tracking pruned
+
+You're now in: /path/to/main/worktree (main branch)
+```
+
 If other worktrees exist, list them:
 
 ```
 Other active worktrees:
-  ../<topic-a> (PROJ-124 - <summary>)
-  ../<topic-b> (PROJ-125 - <summary>)
+  ../<topic-a> (<user>/<topic-a>)
+  ../<topic-b> (<user>/PROJ-124/<topic-b>)
 
 Use /switch to continue work, or /start for new work.
 ```

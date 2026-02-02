@@ -1,76 +1,81 @@
 # /start - Start new work
 
-Begin work on a new task with Jira integration and worktree creation.
+Begin work on a new task with optional Jira integration and worktree creation.
 
 ## Usage
 
-- `/start <summary>` - Create new Jira ticket with summary, then worktree
-- `/start PROJ-123` - Start work on existing Jira ticket
-- `/start` - Interactive: search for existing ticket or create new one
+- `/start <topic>` - Create worktree with topic name (no Jira)
+- `/start PROJ-123` - Start work on existing Jira ticket (requires Atlassian plugin)
+- `/start` - Interactive: ask for topic or search Jira tickets
 
 ## Examples
 
 ```
-/start <ticket summary text>
+/start voltage-sink-tests
 /start PROJ-123
 /start
 ```
 
 ## Instructions
 
-**Step 1: Discover Atlassian site**
+**Step 1: Check for Atlassian plugin**
 
-- Call `getAccessibleAtlassianResources` to get available sites
-- Extract the site URL and cloud ID
-- If multiple sites, ask user to pick
+Try calling `getAccessibleAtlassianResources`:
 
-**Step 2: Determine Jira ticket**
+- If successful: Jira integration is available, store site URL and cloud ID
+- If fails or no sites returned: Jira not available, proceed without it
 
-If argument looks like a Jira key (e.g., `BESS-123`, `PROJ-456`):
+**Step 2: Determine task**
+
+If argument looks like a Jira key (e.g., `BESS-123`, `PROJ-456`) AND Jira is available:
 
 - Fetch the ticket details using `getJiraIssue`
 - Show ticket summary and status for confirmation
+- Extract topic from ticket summary
 
-If argument is free text (summary):
+If argument looks like a Jira key but Jira is NOT available:
 
-- Ask user for project key (or suggest based on recent tickets)
-- Create new ticket with the provided summary
-- Assign to current user
-- Add to current sprint
-- Show created ticket for confirmation
+- Warn: "Jira plugin not available. Use `/start <topic>` instead."
+- Stop
+
+If argument is free text (topic):
+
+- Use it as the topic slug directly
+- If Jira available, optionally ask: "Link to a Jira ticket?" (default: no)
 
 If no argument (interactive):
 
-- Ask user: "What would you like to work on?"
-  - **Use existing ticket**: Search for "To Do" tickets assigned to user, let them pick
-  - **Create new ticket**: Ask for project and summary
+- If Jira available: "Enter a topic name, or a Jira key (e.g., PROJ-123):"
+- If Jira not available: "Enter a topic name for your branch:"
 
 **Step 3: Check for existing worktree**
 
-Check if a worktree already exists for this ticket:
+Check if a worktree already exists for this topic/ticket:
 
 ```bash
-git worktree list | grep -i "<JIRA-KEY>"
+git worktree list | grep -i "<topic-or-jira-key>"
 ```
 
-If found, run `/switch <JIRA-KEY>` instead of creating a duplicate.
+If found, run `/switch <match>` instead of creating a duplicate.
 
-**Step 4: Transition ticket**
+**Step 4: Transition ticket (Jira only)**
 
-- If ticket is not "In Progress", transition it to "In Progress"
+If Jira ticket is linked and not "In Progress":
+
+- Transition it to "In Progress"
 
 **Step 5: Generate branch name**
 
-Format: `<user>/<PROJECT-###>/<topic-slug>`
+With Jira: `<user>/<PROJ-###>/<topic-slug>`
+Without Jira: `<user>/<topic-slug>`
 
 - User: extract from git config `user.email` (part before @), lowercase
-- Project/ticket: from Jira key (e.g., `PROJ-123`)
-- Topic: slugified from ticket summary (lowercase, hyphens, max 40 chars, remove filler words like "add", "update", "the")
+- Topic: slugified (lowercase, hyphens, max 40 chars, remove filler words)
 
 Examples:
 
-- "Expand EOL test coverage for coil sequence verification" -> `eol-test-coverage-coil-sequence`
-- "Add voltage sink tests" -> `voltage-sink-tests`
+- With Jira: `talon/PROJ-123/voltage-sink-tests`
+- Without Jira: `talon/voltage-sink-tests`
 
 **Step 6: Create worktree and switch to it**
 
@@ -93,6 +98,8 @@ cd "$WORKTREE_PATH"
 
 **Step 7: Report**
 
+With Jira:
+
 ```
 Started work on PROJ-123: <ticket summary>
 
@@ -100,6 +107,17 @@ Worktree: ../<topic-slug>
 Branch:   <user>/PROJ-123/<topic-slug>
 Jira:     https://<site>.atlassian.net/browse/PROJ-123
 Status:   In Progress
+
+Ready to begin.
+```
+
+Without Jira:
+
+```
+Started work: <topic>
+
+Worktree: ../<topic-slug>
+Branch:   <user>/<topic-slug>
 
 Ready to begin.
 ```
