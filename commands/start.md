@@ -27,7 +27,7 @@ Try calling `getAccessibleAtlassianResources`:
 
 **Step 2: Determine task**
 
-If argument looks like a Jira key (e.g., `BESS-123`, `PROJ-456`) AND Jira is available:
+If argument looks like a Jira key (e.g., `PROJ-123`, `PROJ-456`) AND Jira is available:
 
 - Fetch the ticket details using `getJiraIssue`
 - Show ticket summary and status for confirmation
