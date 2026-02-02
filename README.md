@@ -164,22 +164,58 @@ Rules and preferences applied to every Claude Code session:
 
 ## Typical Workflow
 
-This config supports a Jira-integrated worktree workflow. Each task gets its own worktree, keeping work isolated and easy to switch between.
+This config supports a worktree-based workflow with optional Jira integration. Each task gets its own worktree, keeping work isolated and easy to switch between.
+
+```mermaid
+flowchart TD
+    subgraph "Start Work"
+        A1["/jira mine"] --> A2{Pick ticket}
+        A2 --> B1["/start PROJ-123"]
+        A3["/start my-feature"] --> C
+        B1 --> C[Worktree created]
+    end
+
+    subgraph "Development"
+        C --> D[Write code]
+        D --> E["/commit"]
+        E --> F{More work?}
+        F -->|Yes| D
+        F -->|No| G["/dev-review"]
+    end
+
+    subgraph "Pre-merge"
+        G --> H{Issues?}
+        H -->|Yes| D
+        H -->|No| I["/rebase"]
+        I --> J["/pr"]
+        J --> K["/checks"]
+        K --> L{CI passed?}
+        L -->|No| D
+        L -->|Yes| M[Merge]
+    end
+
+    subgraph "Cleanup"
+        M --> N["/done"]
+    end
+
+    O["/switch"] -.->|Context switch| C
+    P["/status"] -.->|Check progress| D
+```
 
 ### Starting work
 
 ```
-/jira mine                    # List your tickets grouped by sprint
-/start PROJ-123               # Start work on existing ticket
-/start fix the login bug      # Create new ticket and start work
+/start my-feature             # Start with topic name (no Jira)
+/start PROJ-123               # Start from Jira ticket (if plugin available)
+/jira mine                    # List your Jira tickets first
 ```
 
-`/start` creates a worktree, checks out a new branch (`user/PROJ-123/topic-slug`), and transitions the ticket to In Progress.
+`/start` creates a worktree and branch. With Jira: `user/PROJ-123/topic-slug`. Without: `user/topic-slug`.
 
 ### During development
 
 ```
-/status                       # Overview: branch, Jira, PR status
+/status                       # Overview: branch, Jira (if linked), PR status
 /commit                       # Commit with auto-detected scope
 /commit add user validation   # Commit with custom summary
 ```
@@ -188,8 +224,8 @@ This config supports a Jira-integrated worktree workflow. Each task gets its own
 
 ```
 /switch                       # List worktrees and pick one
-/switch PROJ-124              # Switch to worktree by ticket
-/switch 2                     # Switch by number
+/switch PROJ-124              # Switch by Jira ticket
+/switch my-feature            # Switch by topic name
 ```
 
 ### Pre-merge
@@ -197,20 +233,21 @@ This config supports a Jira-integrated worktree workflow. Each task gets its own
 ```
 /dev-review                   # Run architecture, bug, and compliance checks
 /rebase                       # Sync with main
-/pr                           # Create PR with Jira link
+/pr                           # Create PR (includes Jira link if available)
 /checks                       # View CI status
 ```
 
 ### After merge
 
 ```
-/done                         # Transition Jira to Done, remove worktree, delete branch
+/done                         # Clean up: remove worktree, delete branch, transition Jira
 ```
 
-### Quick Jira operations
+### Jira operations (requires Atlassian plugin)
 
 ```
 /jira                         # Show current ticket details
+/jira mine                    # List tickets assigned to you
 /jira comment "WIP: tests passing"
 /jira progress                # Transition to In Progress
 /jira done                    # Transition to Done (without cleanup)
