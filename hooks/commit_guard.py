@@ -56,8 +56,12 @@ EMOJI_PATTERN = re.compile(
 def check_commit_message(message: str) -> tuple[bool, str]:
     """Check commit message for prohibited content."""
 
+    # Strip the "scope: " prefix before checking prohibited terms,
+    # since scope names like "claude:" are legitimate directory names.
+    body = re.sub(r"^[a-zA-Z0-9_-]+:\s*", "", message, count=1)
+
     # Check for prohibited terms
-    if PROHIBITED_PATTERN.search(message):
+    if PROHIBITED_PATTERN.search(body):
         return False, "Commit message contains prohibited AI attribution terms"
 
     # Check for co-authored-by with AI
