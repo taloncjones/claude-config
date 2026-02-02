@@ -152,6 +152,60 @@ Rules and preferences applied to every Claude Code session:
 - Python: `uv` + ruff, Rust: `cargo fmt` + clippy
 - No secrets in code
 
+## Typical Workflow
+
+This config supports a Jira-integrated worktree workflow. Each task gets its own worktree, keeping work isolated and easy to switch between.
+
+### Starting work
+
+```
+/jira mine                    # List your tickets grouped by sprint
+/start PROJ-123               # Start work on existing ticket
+/start fix the login bug      # Create new ticket and start work
+```
+
+`/start` creates a worktree, checks out a new branch (`user/PROJ-123/topic-slug`), and transitions the ticket to In Progress.
+
+### During development
+
+```
+/status                       # Overview: branch, Jira, PR status
+/commit                       # Commit with auto-detected scope
+/commit add user validation   # Commit with custom summary
+```
+
+### Switching context
+
+```
+/switch                       # List worktrees and pick one
+/switch PROJ-124              # Switch to worktree by ticket
+/switch 2                     # Switch by number
+```
+
+### Pre-merge
+
+```
+/dev-review                   # Run architecture, bug, and compliance checks
+/rebase                       # Sync with main
+/pr                           # Create PR with Jira link
+/checks                       # View CI status
+```
+
+### After merge
+
+```
+/done                         # Transition Jira to Done, remove worktree, delete branch
+```
+
+### Quick Jira operations
+
+```
+/jira                         # Show current ticket details
+/jira comment "WIP: tests passing"
+/jira progress                # Transition to In Progress
+/jira done                    # Transition to Done (without cleanup)
+```
+
 ## Permissions
 
 The config pre-approves safe read-only commands (`ls`, `git status`, `git diff`, etc.) and requires confirmation for destructive operations (`rm`, `git push`, `git commit`, `git rebase`).
