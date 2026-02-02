@@ -2,6 +2,16 @@
 
 Personal configuration for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) -- custom slash commands, agents, hooks, and marketplace plugins.
 
+## Contents
+
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Marketplace Plugins](#marketplace-plugins)
+- [What's Included](#whats-included)
+- [Typical Workflow](#typical-workflow)
+- [Permissions](#permissions)
+- [Customization](#customization)
+
 ## Prerequisites
 
 **Required:**
