@@ -1,5 +1,8 @@
 # Claude Code Config
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-config-blueviolet)](https://docs.anthropic.com/en/docs/claude-code)
+
 Personal configuration for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) -- custom slash commands, agents, hooks, and marketplace plugins.
 
 ## Contents
