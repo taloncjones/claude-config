@@ -49,9 +49,29 @@ If no argument (interactive):
   - **Yes**: Offer options:
     - Pick from open tickets (To Do, In Progress) assigned to user
     - Enter a ticket key directly
-    - Create a new ticket (ask for project and summary)
+    - Create a new ticket
   - **No**: Ask for topic name only, proceed without Jira
 - If Jira not available: Ask for topic name for the branch
+
+**Creating a new Jira ticket:**
+
+When creating a new ticket, use conversation context to propose a title and description:
+
+1. Review recent conversation for task details, feature names, or technical specs
+2. Generate a proposed title (concise, <80 chars) and description (bullet points)
+3. Present them for confirmation:
+
+   ```
+   Proposed Jira ticket:
+   Title: <proposed title>
+   Description:
+   <proposed description>
+
+   Create this ticket? [Yes / Edit title / Edit description / Cancel]
+   ```
+
+4. If user provides topic text with `/start <topic>`, use that as the basis for the title
+5. Only ask open-ended "What should the title be?" if there's no context to work from
 
 **Step 3: Check for existing worktree**
 

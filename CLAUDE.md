@@ -67,3 +67,24 @@ These rules are enforced by hooks in Claude Code. Follow them in all tools.
 
 - `cargo fmt` and `cargo clippy` before commits
 - snake_case for modules/files
+
+## Plans
+
+When creating or entering plan mode:
+
+1. Check current branch for Jira ticket: `git branch --show-current | grep -oE '[A-Z]+-[0-9]+'`
+2. If Jira ticket found:
+   - Name plan file: `~/.claude/plans/<JIRA-KEY>-<topic-slug>.md` (e.g., `BESS-911-eol-can-test-infra.md`)
+   - Start plan with header:
+
+     ```
+     # <JIRA-KEY>: <Ticket Summary>
+
+     Jira: https://<site>.atlassian.net/browse/<JIRA-KEY>
+     Branch: <branch-name>
+
+     ## Summary
+     ...
+     ```
+
+3. If no Jira ticket: use default random naming
